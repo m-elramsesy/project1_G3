@@ -213,18 +213,33 @@ class PrivateChat : public Chat {
 private:
     string user1;
     string user2;
-    
+
 public:
     PrivateChat(string u1, string u2) {
-        // TODO: Implement constructor
+        user1 = u1;
+        user2 = u2;
+        participants.push_back(u1);
+        participants.push_back(u2);
+        chatName = "Chat between " + u1 + " and " + u2;
     }
-    
+
     void displayChat() const override {
-        // TODO: Implement private chat display
+        cout << "=== " << chatName << " ===" << endl;
+        if (messages.empty()) {
+            cout << "No messages yet." << endl;
+            return;
+        }
+        for (size_t i = 0; i < messages.size(); i++) {
+            messages[i].display();
+        }
     }
-    
+
     void showTypingIndicator(const string& username) const {
-        // TODO: Implement typing indicator
+        if (username == user1 || username == user2) {
+            cout << username << " is typing..." << endl;
+        } else {
+            cout << "Error: " << username << " is not a participant of this chat." << endl;
+        }
     }
 };
 
