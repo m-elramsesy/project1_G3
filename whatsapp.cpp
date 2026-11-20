@@ -281,6 +281,7 @@ private:
     vector<User> users;
     vector<Chat*> chats;
     int currentUserIndex;
+    vector<vector<string>> chatParticipants;
     
     int findUserIndex(string username) const {
         for(int i = 0; i < users.size(); i++) {
@@ -379,13 +380,93 @@ public:
     
     void createGroup() {
         // TODO: Implement group creation
+        if (!isLoggedIn()) {
+            cout << "Please login first!\n";
+            return;
+        }
+        string GroupName;
+        int GroupMembers;
+        cout<< "\nEnter group name: ";
+        cin >> GroupName;
+        if (GroupName.empty()) {
+            cout << "Group name cannot be empty!\n";
+            return;
+        }
+        cout<< "Enter number of group members: ";
+        cin >> GroupMembers;
+        if(GroupMembers < 2) {
+            cout << "Group must have at least 2 members!\n";
+            return;
+        }
+        vector <string> members;
+        string member;
+        for(int i=0; i<GroupMembers; i++) {
+            cout<< "Enter member " << i+1 << " username: ";
+            cin >> member;
+            if(findUserIndex(member) == -1) {
+                cout << "User '" << member << "' not found!\n";
+                i--;
     }
+           if(member == getCurrentUsername()) {
+                cout << "You are already the group creator!\n";
+                i--;
+                continue;
+           }
+           bool Duplicate = false;
+           for(int j=0; j<members.size(); j++) {
+                if(members[j] == member) {
+                    Duplicate = true;
+                    cout << "User '" << member << "' is already in the group!\n";
+                    break;
+                }
+           }
+           if(!Duplicate) {
+               members.push_back(member);
+           }
+}
+               Chat* newGroup = new GroupChat(members, GroupName, getCurrentUsername());
+               chats.push_back(newGroup);
+               users[currentUserIndex].updateLastSeen();
+               cout << "Group '" << GroupName << "' created successfully!\n";
+                }
+
+
     
     void viewChats() const {
         // TODO: Implement chat viewing
+        if (!isLoggedIn()) {
+            cout << "Please login first!\n";
+            return;
+        }
+        string currentUsername = getCurrentUsername();
+        bool found = false;
+
+        cout << "Your Chats:\n";
+        for (int i = 0; i < chats.size(); i++) {
+
+        bool isParticipant = false;
+
+        for (int j = 0; j < chatParticipants[i].size(); j++) {
+
+            if (chatParticipants[i][j] == currentUsername) {
+                isParticipant = true;
+                break;
+            }
     }
-    
-    void logout() {
+    if (isParticipant) {
+            found = true;
+            cout << "\nChat " << i + 1 << ":\n";
+            chats[i]->displayChat();
+        }
+    }
+    if (!found) {
+        cout << "You have no chats yet.\n";
+
+    }
+
+    }
+
+    void logout() {     
         users[currentUserIndex].setStatus("Offline");
 		users[currentUserIndex].updateLastSeen();
 		currentUserIndex = -1;
