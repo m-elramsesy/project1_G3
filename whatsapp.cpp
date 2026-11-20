@@ -79,56 +79,89 @@ private:
     
 public:
     Message() {
-        // TODO: Implement default constructor
+		sender = "";
+		content = "";
+		timestamp = "";
+		status = "";
+		replyTo = nullptr;
     }
     
     Message(string sndr, string cntnt) {
-        // TODO: Implement parameterized constructor
+		sender = sndr;
+		content = cntnt;
+		status = "Sent";
+		replyTo = nullptr;
+		updateTimestamp();
     }
     
     string getContent() const {
-        // TODO: Implement getter
-        return "";
+        
+		return content; 
     }
     
     string getSender() const {
-        // TODO: Implement getter
-        return "";
+       
+		return sender;
     }
     
     string getTimestamp() const {
-        // TODO: Implement getter
-        return "";
+        
+        return timestamp;
     }
     
     string getStatus() const {
-        // TODO: Implement getter
-        return "";
+        
+        return status;
     }
     
     Message* getReplyTo() const {
-        // TODO: Implement getter
-        return nullptr;
+        
+        return replyTo;
     }
     
     void setStatus(string newStatus) {
-        // TODO: Implement setter
+		status = newStatus;
     }
     
     void setReplyTo(Message* msg) {
-        // TODO: Implement setter
+		replyTo = msg;
     }
     
     void updateTimestamp() {
-        // TODO: Implement timestamp update
+		time_t now = time(0);
+		string currentTime = ctime(&now);
+
+		if (!currentTime.empty() && currentTime.back() == '\n') {
+			currentTime.pop_back(); 
+		}
+		timestamp = currentTime;
     }
     
     void display() const {
-        // TODO: Implement message display
+        cout << "\nSender: " << sender;
+        cout << "\nTimestamp: " << timestamp;
+        cout << "\nStatus: " << status;
+		cout << "\nMessage: " << content;
+
+		if (replyTo != nullptr) {
+			cout << "\nReplying to: " << replyTo->getContent();
+		}
+		cout << endl;
     }
     
     void addEmoji(string emojiCode) {
-        // TODO: Implement emoji support
+		string emoji;
+
+		if (emojiCode == ":)") emoji = "😊";
+		else if (emojiCode == ":(") emoji = "😢";
+		else if (emojiCode == ":D") emoji = "😄";
+		else if (emojiCode == ";)") emoji = "😉";
+		else if (emojiCode == "<3") emoji = "❤️";
+		else if (emojiCode == ":P") emoji = "😛";
+		else {
+			cout << "Invalid emoji code!" << endl;
+			return;
+		}
     }
 };
 
