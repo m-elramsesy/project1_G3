@@ -9,60 +9,84 @@ using namespace std;
 // ========================
 class User {
 private:
-    string username;
-    string password;
-    string phoneNumber;
-    string status;
-    string lastSeen;
+   //attributes
+  string username="";
+  string password="";
+  string phoneNumber="";
+  string status="";
+  string lastSeen;
     
 public:
-    User() {
-        // TODO: Implement default constructor
+   //Consutructor
+ User() {
+        username = "";
+        password = "";
+        phoneNumber = "";
+        status = "";
+        updateLastSeen();
+    }
+    //Constructor with parmeters
+    User(string username, string password, string phone) {
+        this->username = username;
+        this->password = password;
+        this->phoneNumber = phone;
+        this->status = "";
+        updateLastSeen();
     }
     
-    User(string uname, string pwd, string phone) {
-        // TODO: Implement parameterized constructor
+  //Getters
+     string getUsername() const {
+        return username;
     }
-    
-    string getUsername() const {
-        // TODO: Implement getter
-        return "";
-    }
-    
+
     string getPhoneNumber() const {
-        // TODO: Implement getter
-        return "";
+        return phoneNumber;
     }
-    
+
     string getStatus() const {
-        // TODO: Implement getter
-        return "";
+        return status;
     }
-    
+
     string getLastSeen() const {
-        // TODO: Implement getter
-        return "";
+        return lastSeen;
     }
     
+    //Setters
     void setStatus(string newStatus) {
-        // TODO: Implement setter
+        status = newStatus;
     }
-    
+
     void setPhoneNumber(string phone) {
-        // TODO: Implement setter
+        phoneNumber = phone;
     }
-    
+        // Update last seen
     void updateLastSeen() {
-        // TODO: Implement last seen update
+        time_t now = time(0);
+        tm* localTime = localtime(&now);
+
+        if (localTime == nullptr) {
+            lastSeen = "";
+            return;
+        }
+
+        char buffer[20];
+
+        strftime(buffer, sizeof(buffer),
+            "%Y-%m-%d %H:%M:%S", localTime);
+
+        lastSeen = buffer;
     }
     
+ // Check password
     bool checkPassword(string pwd) const {
-        // TODO: Implement password check
-        return false;
+        return password == pwd;
     }
-    
+
+    // Change password
     void changePassword(string newPwd) {
-        // TODO: Implement password change
+        if (newPwd.length() >= 6) {
+            password = newPwd;
+        }
     }
 };
 
