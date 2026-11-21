@@ -168,43 +168,89 @@ public:
 // ========================
 //       CHAT CLASS (BASE)
 // ========================
-class Chat {
+class Chat
+{
 protected:
     vector<string> participants;
     vector<Message> messages;
     string chatName;
-    
+
 public:
-    Chat() {
+    Chat()
+    {
         // TODO: Implement default constructor
+        participants = {};
+        messages = {};
+        chatName = "";
     }
-    
-    Chat(vector<string> users, string name) {
+
+    Chat(vector<string> users, string name)
+    {
         // TODO: Implement parameterized constructor
+        participants = users;
+        chatName = name;
     }
-    
-    void addMessage(const Message& msg) {
+
+    void addMessage(const Message &msg)
+    {
         // TODO: Implement message addition
+        messages.push_back(msg);
     }
-    
-    bool deleteMessage(int index, const string& username) {
+
+    bool deleteMessage(int index, const string &username)
+    {
         // TODO: Implement message deletion
+        if (index >= 0 && index < messages.size() && messages[index].getSender() == username)
+        {
+            messages.erase(messages.begin() + index);
+            return true;
+        }
         return false;
     }
-    
-    virtual void displayChat() const {
+
+    virtual void displayChat() const
+    {
         // TODO: Implement chat display
+        if (messages.empty())
+        {
+            cout << "NO Messages!";
+        }
+        else
+        {
+            for (int i = 0; i < messages.size(); i++)
+
+                cout << messages[i].getSender() << " " << messages[i].getContent() << " " << messages[i].getTimestamp();
+        }
     }
-    
-    vector<Message> searchMessages(string keyword) const {
+
+    vector<Message> searchMessages(string keyword) const // hello world
+    {
         // TODO: Implement message search
-        return {};
+        vector<Message> result = {};
+        if (messages.empty())
+        {
+            return {};
+        }
+        else
+        {
+            for (Message msg : messages)
+            {
+                if (msg.getContent().find(keyword) == string::npos) // not founded
+                {
+                    continue;
+                }
+                result.push_back(msg);
+            }
+        }
+        return result;
     }
-    
-    void exportToFile(const string& filename) const {
+
+    void exportToFile(const string &filename) const
+    {
         // TODO: Implement export to file
     }
 };
+
 
 // ========================
 //     PRIVATE CHAT CLASS
